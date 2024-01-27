@@ -1,4 +1,3 @@
-# data_analysis_app/gui/gui_main.py
 import tkinter as tk
 from tkinter import filedialog
 from data.data_loader import load_data
