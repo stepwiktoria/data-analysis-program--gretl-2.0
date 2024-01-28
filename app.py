@@ -1,7 +1,8 @@
 import tkinter as tk
-from tkinter import filedialog
-from data_loader import load_csv
-from data_analysis import analyze_data
+from tkinter import filedialog, ttk
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 class DataAnalysisApp:
     def __init__(self):
@@ -14,16 +15,26 @@ class DataAnalysisApp:
         self.root.mainloop()
 
     def create_widgets(self):
-        load_button = tk.Button(self.root, text="Load CSV Data", command=self.load_data)
-        load_button.pack()
+        style = ttk.Style()
+        style.configure('TButton', font=('Arial', 10), padding=6)
+        style.configure('TLabel', font=('Arial', 12), padding=6)
 
-        analyze_button = tk.Button(self.root, text="Analyze Data", command=self.analyze_data)
-        analyze_button.pack()
+        load_button = ttk.Button(self.root, text="Load CSV Data", command=self.load_data)
+        load_button.pack(pady=10)
+
+        self.fig, self.ax = plt.subplots()
+        self.canvas = FigureCanvasTkAgg(self.fig, master=self.root)
+        self.canvas.get_tk_widget().pack(expand=True, fill='both')
 
     def load_data(self):
         file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv")])
         if file_path:
-            load_csv(file_path)
+            self.data = pd.read_csv(file_path)
+            self.visualize_data()
 
-    def analyze_data(self):
-        analyze_data()
+    def visualize_data(self):
+        # Prosta wizualizacja danych
+        self.ax.clear()
+        if not self.data.empty:
+            self.data.hist(ax=self.ax)
+            self.canvas.draw()
