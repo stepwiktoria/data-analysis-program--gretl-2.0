@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>DataInsight - Analiza Danych</title>
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="mb-4">Analiza Danych</h1>
+        
+        <h2>Statystyki opisowe:</h2>
+        <div>
+            {{ description|safe }}
+        </div>
+
+        <h2>Korelacja między zmiennymi:</h2>
+        <div>
+            {{ correlation|safe }}
+        </div>
+
+        <h2>Usuń zmienne:</h2>
+        <ul>
+            <li>{{ selected_dependent_var }} <a href="{{ url_for('remove_variable', variable_name=selected_dependent_var) }}" class="btn btn-danger btn-sm">Usuń</a></li>
+            {% for var in selected_independent_vars %}
+                <li>{{ var }} <a href="{{ url_for('remove_variable', variable_name=var) }}" class="btn btn-danger btn-sm">Usuń</a></li>
+            {% endfor %}
+        </ul>
+
+        <a href="{{ url_for('linear_regression') }}" class="btn btn-primary mt-3">Wykonaj regresję liniową</a>
+    </div>
+</body>
+</html>
